@@ -15,22 +15,22 @@ export default async function handler(req, res) {
 
     const orderReference = (referenceId ? String(referenceId) : `PEDIDO${Date.now()}`).replace(/[^a-zA-Z0-9]/g, '');
     const parsedAmount = Number(amount) || 0;
-    const amountInReais = parseFloat(parsedAmount.toFixed(2)); // Paradise Pags expects decimal (Reais)
+    const amountInCents = Math.round(parsedAmount * 100); // Paradise Pags espera centavos (inteiro)
 
     const payload = {
       productHash: process.env.VITE_PARADISE_PRODUCT_HASH || "prod_cdf8c019ba3ce3cf",
-      amount: amountInReais,
+      amount: amountInCents,
       description: (productName || "Pedido Vapex").substring(0, 255),
       reference: orderReference,
       customer: {
         name: name || "Cliente Vapex",
         email: email || "cliente@vapex.com",
         phone: phone ? phone.replace(/\D/g, "") : "11999999999",
-        document: cpf ? cpf.replace(/\D/g, "") : "", // Let Paradise Pags or user's real CPF pass
+        document: cpf ? cpf.replace(/\D/g, "") : "",
       },
     };
 
-    console.log(`Gerando PIX Paradise Pags - Valor Recebido: ${amount} - Calculado (Reais): ${amountInReais} - Pedido: ${orderReference}`);
+    console.log(`Gerando PIX Paradise Pags - Valor: R$${parsedAmount} (${amountInCents} centavos) - Pedido: ${orderReference}`);
     console.log(`Payload enviado:`, JSON.stringify(payload));
 
     const response = await fetch("https://multi.paradisepags.com/api/v1/transaction.php", {
