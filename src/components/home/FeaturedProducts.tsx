@@ -112,23 +112,26 @@ export default function FeaturedProducts() {
 
   useEffect(() => {
     let query = supabase.from('products').select('*, category:categories(*)');
-    if (activeTab === 'featured') query = query.not('badge', 'is', null);
+    if (activeTab === 'featured') query = query.eq('badge', 'Mais Vendido');
     else if (activeTab === 'new') query = query.eq('is_new', true);
     else query = query.not('compare_at_price', 'is', null);
 
-    query.limit(8).then(({ data }) => {
+    const limit = activeTab === 'featured' ? 100 : 8;
+
+    query.limit(limit).then(({ data }) => {
       const fetchedProducts = (data as Product[]) || [];
 
       if (fetchedProducts && fetchedProducts.length > 0) {
-        setProducts(fetchedProducts.slice(0, 8));
+        setProducts(fetchedProducts);
       } else {
         // Fallback: usa dados locais quando Supabase não tem dados
-        setProducts(MOCK_PRODUCTS.filter(p => {
-          if (activeTab === 'featured') return p.badge != null && p.badge !== '';
+        const filtered = MOCK_PRODUCTS.filter(p => {
+          if (activeTab === 'featured') return p.badge === 'Mais Vendido';
           if (activeTab === 'new') return p.is_new === true;
           if (activeTab === 'offers') return (p.compare_at_price ?? 0) > 0;
           return true;
-        }).slice(0, 8));
+        });
+        setProducts(activeTab === 'featured' ? filtered : filtered.slice(0, 8));
       }
     });
   }, [activeTab]);
