@@ -116,22 +116,19 @@ export default function FeaturedProducts() {
     else if (activeTab === 'new') query = query.eq('is_new', true);
     else query = query.not('compare_at_price', 'is', null);
 
-    const limit = activeTab === 'featured' ? 100 : 8;
-
-    query.limit(limit).then(({ data }) => {
+    query.limit(1000).then(({ data }) => {
       const fetchedProducts = (data as Product[]) || [];
 
       if (fetchedProducts && fetchedProducts.length > 0) {
         setProducts(fetchedProducts);
       } else {
         // Fallback: usa dados locais quando Supabase não tem dados
-        const filtered = MOCK_PRODUCTS.filter(p => {
+        setProducts(MOCK_PRODUCTS.filter(p => {
           if (activeTab === 'featured') return p.badge === 'Mais Vendido';
           if (activeTab === 'new') return p.is_new === true;
           if (activeTab === 'offers') return (p.compare_at_price ?? 0) > 0;
           return true;
-        });
-        setProducts(activeTab === 'featured' ? filtered : filtered.slice(0, 8));
+        }));
       }
     });
   }, [activeTab]);
