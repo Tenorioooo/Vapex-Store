@@ -31,7 +31,6 @@ export default async function handler(req, res) {
     };
 
     console.log(`Gerando PIX Paradise Pags - Valor: R$${parsedAmount} (${amountInCents} centavos) - Pedido: ${orderReference}`);
-    console.log(`Payload enviado:`, JSON.stringify(payload));
 
     const response = await fetch("https://multi.paradisepags.com/api/v1/transaction.php", {
       method: "POST",
@@ -77,7 +76,7 @@ export default async function handler(req, res) {
     } else {
       console.error("Erro na resposta da Paradise Pags:", responseData);
       return res.status(400).json({
-        error: `Erro Paradise: ${JSON.stringify(responseData)} | Payload enviado: ${JSON.stringify(payload)}`
+        error: responseData.message || responseData.error || "Falha ao processar o pagamento"
       });
     }
   } catch (error) {
