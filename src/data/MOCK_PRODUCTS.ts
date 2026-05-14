@@ -3663,33 +3663,5 @@ export const MOCK_PRODUCTS: Product[] = [
     puffs: null,
     battery: null,
     intensity: '3mg'
-  },
-  {
-    id: 'teste-pix',
-    name: 'Produto de Teste PIX',
-    slug: 'produto-de-teste-pix',
-    brand: 'Vapex',
-    description: 'Produto de teste para validação do checkout e pagamento via PIX. Use este produto para realizar testes de pagamento.',
-    price: 0.10,
-    compare_at_price: null,
-    category_id: 'pods-descartaveis',
-    image_url: 'https://images.unsplash.com/photo-1511210103507-6a6839ec97b8?q=80&w=600&auto=format&fit=crop',
-    images: ['https://images.unsplash.com/photo-1511210103507-6a6839ec97b8?q=80&w=600&auto=format&fit=crop'],
-    rating: 5.0,
-    review_count: 1,
-    badge: 'Teste',
-    in_stock: true,
-    stock_count: 999,
-    is_featured: true,
-    is_new: true,
-    is_limited: false,
-    technology: 'API Podpay',
-    features: [{ label: 'Checkout', value: 'Teste' }],
-    flavors: ['Sucesso'],
-    colors: ['Verde'],
-    puffs: null,
-    battery: null,
-    intensity: 'Suave'
-  }
 ];
 
