@@ -3663,5 +3663,6 @@ export const MOCK_PRODUCTS: Product[] = [
     puffs: null,
     battery: null,
     intensity: '3mg'
+  }
 ];
 
