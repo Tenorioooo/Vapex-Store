@@ -112,7 +112,7 @@ export default function FeaturedProducts() {
 
   useEffect(() => {
     let query = supabase.from('products').select('*, category:categories(*)');
-    if (activeTab === 'featured') query = query.eq('badge', 'Mais Vendido');
+    if (activeTab === 'featured') query = query.not('badge', 'is', null);
     else if (activeTab === 'new') query = query.eq('is_new', true);
     else query = query.not('compare_at_price', 'is', null);
 
@@ -124,7 +124,7 @@ export default function FeaturedProducts() {
       } else {
         // Fallback: usa dados locais quando Supabase não tem dados
         setProducts(MOCK_PRODUCTS.filter(p => {
-          if (activeTab === 'featured') return p.badge === 'Mais Vendido';
+          if (activeTab === 'featured') return p.badge != null && p.badge !== '';
           if (activeTab === 'new') return p.is_new === true;
           if (activeTab === 'offers') return (p.compare_at_price ?? 0) > 0;
           return true;
